@@ -1,4 +1,4 @@
-use std::fs;
+use std::{error, fs};
 mod args;
 mod column;
 mod constants;
@@ -8,7 +8,7 @@ use args::Args;
 use clap::Parser;
 use generator::{build_header, build_row};
 
-fn main() {
+fn run() -> Result<(), Box<dyn error::Error>> {
     let args = Args::parse();
     let mut rows = vec![];
 
@@ -22,9 +22,18 @@ fn main() {
 
     let output = rows.join(&args.row_delimiter);
 
-    if let Some(output_file) = args.output_file {
-        fs::write(output_file, output).unwrap();
+    if let Some(output_file) = &args.output_file {
+        fs::write(output_file, output)?;
     } else {
         println!("{}", output);
+    }
+
+    Ok(())
+}
+
+fn main() {
+    if let Err(e) = run() {
+        eprintln!("error: {}", e);
+        std::process::exit(1);
     }
 }
