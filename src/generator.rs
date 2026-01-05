@@ -3,8 +3,6 @@ use rand::prelude::*;
 use crate::args::Args;
 use crate::column::{Column, GenerateRandomStringValue};
 
-type ColumnMapperFn = fn(&Column) -> String;
-
 pub fn build_header(args: &Args) -> String {
     columns_mapper(args, |c| c.name.clone())
 }
@@ -18,10 +16,13 @@ pub fn build_row(args: &Args) -> String {
     })
 }
 
-fn columns_mapper(args: &Args, mapper_fn: ColumnMapperFn) -> String {
+fn columns_mapper<F>(args: &Args, f: F) -> String
+where
+    F: Fn(&Column) -> String,
+{
     args.columns
         .iter()
-        .map(mapper_fn)
+        .map(f)
         .collect::<Vec<_>>()
         .join(&args.column_delimiter)
 }
