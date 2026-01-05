@@ -1,14 +1,7 @@
 use std::str::FromStr;
 
-use super::ColumnKind;
+use super::{Column, ColumnKind};
 use crate::constants::*;
-
-#[derive(Debug, Clone)]
-pub struct Column {
-    pub kind: ColumnKind,
-    pub name: String,
-    pub nillable: bool,
-}
 
 impl FromStr for Column {
     type Err = String;
