@@ -1,0 +1,10 @@
+[package]
+name = "csv-mock"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = "0.4.42"
+clap = { version = "4.5.54", features = ["derive"] }
+rand = "0.9.2"
+uuid = { version = "1.19.0", features = ["v4"] }
