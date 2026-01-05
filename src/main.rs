@@ -22,8 +22,11 @@ fn run() -> Result<(), Box<dyn error::Error>> {
 
     let output = rows.join(&args.row_delimiter);
 
-    if let Some(output_file) = &args.output_file {
-        fs::write(output_file, output)?;
+    if let Some(path) = &args.output_file {
+        if let Err(e) = fs::write(path, &output) {
+            eprintln!("Failed to write '{}': {}", path, e);
+            std::process::exit(1);
+        }
     } else {
         println!("{}", output);
     }
